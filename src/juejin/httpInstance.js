@@ -50,6 +50,7 @@ http.interceptors.response.use(
 
 http.setCookie = cookie => {
   http.defaults.headers.cookie = cookie
+  http.cookie = cookie // 保存 cookie，供 browser.js(Playwright) 使用
 }
 
 module.exports = http

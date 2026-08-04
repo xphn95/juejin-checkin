@@ -1,4 +1,5 @@
 const http = require('./httpInstance.js')
+const { getBenefitPage: browserGetBenefitPage } = require('./browser.js')
 
 class Api {
   constructor() {
@@ -153,15 +154,22 @@ class Api {
   }
 
   /**
-   * @desc 收集 Bug
-   * @param bug_time
-   * @param bug_type
-   * @returns {Promise<*>}
+   * @desc 矿石可兑换物品（带请求体，走真实浏览器）
+   * 说明：该接口为 body-POST，juejin 的 secsdk anti-bot 要求真实浏览器上下文，
+   *       axios 无法通过，故用 Playwright(系统 Edge) 完成；失败时回退到空 body 的 axios。
    */
-  getBenefitPage({ page_no = 1, page_size = 1000, type = 2, got_channel = 2 } = {}) {
-    return this.http.post('/growth_api/v1/get_benefit_page', '', {
-      metadata: { addEncryptParams: true }
-    })
+  async getBenefitPage({ page_no = 1, page_size = 1000, type = 1, got_channel = 2 } = {}) {
+    try {
+      return await browserGetBenefitPage({
+        cookie: this.http.cookie,
+        page_no, page_size, type, got_channel,
+      })
+    } catch (e) {
+      console.warn(`getBenefitPage(browser) 失败，回退空 body axios: ${e.message}`)
+      return this.http.post('/growth_api/v1/get_benefit_page', '', {
+        metadata: { addEncryptParams: true }
+      })
+    }
   }
 }
 

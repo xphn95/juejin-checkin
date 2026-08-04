@@ -14,7 +14,7 @@ jobs:
       - name: Setup node
         uses: actions/setup-node@v3
         with:
-          node-version: '16.14.2'
+          node-version: '20'
 
       - name: Depend install and serve
         env:
@@ -25,5 +25,7 @@ jobs:
           DINGDING_WEBHOOK: ${{ secrets.DINGDING_WEBHOOK }}
           FEISHU_WEBHOOK: ${{ secrets.FEISHU_WEBHOOK }}
         run: |
-          npm install
+          npm ci
+          # getBenefitPage 走 Playwright 自带 Chromium，需下载 + Linux 系统依赖
+          npx playwright install --with-deps chromium
           npm run serve
