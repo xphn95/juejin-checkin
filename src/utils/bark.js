@@ -9,6 +9,7 @@ const wait = ms => new Promise(resolve => setTimeout(resolve, ms))
 
 const bark = async ({ title = '', content = '' } = {}) => {
   const server = BARK_SERVER || DEFAULT_SERVER
+  const body = htmlToPlainText(content)
 
   for (let i = 0; i < MAX_RETRY; i++) {
     try {
@@ -17,7 +18,7 @@ const bark = async ({ title = '', content = '' } = {}) => {
         {
           device_key: BARK_KEY,
           title,
-          body: content,
+          body,
         },
         {
           timeout: TIMEOUT,
@@ -41,5 +42,27 @@ const bark = async ({ title = '', content = '' } = {}) => {
     }
   }
 }
+
+/**
+ * @desc 将 HTML 消息转换为 Bark 可读的纯文本
+ * 覆盖 formatMessage 生成的 <p>/<strong>/<details>/<summary>/<ul>/<li>
+ */
+const htmlToPlainText = html =>
+  String(html || '')
+    .replace(/<p>/g, '\n')
+    .replace(/<\/p>/g, '\n')
+    .replace(/<details>/g, '')
+    .replace(/<\/details>/g, '')
+    .replace(/<summary>/g, '')
+    .replace(/<\/summary>/g, '\n')
+    .replace(/<ul>/g, '')
+    .replace(/<\/ul>/g, '')
+    .replace(/<li>/g, '\n• ')
+    .replace(/<\/li>/g, '')
+    .replace(/<br\s*\/?>/g, '\n')
+    .replace(/<[^>]+>/g, '')
+    .replace(/[ \t]+\n/g, '\n')
+    .replace(/\n{3,}/g, '\n\n')
+    .trim()
 
 module.exports = bark
