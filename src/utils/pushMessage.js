@@ -2,7 +2,8 @@ const email = require('./email.js')
 const pushplus = require('./pushplus.js')
 const dingding = require('./dingding.js')
 const feishu = require('./feishu.js')
-const { EMAIL, AUTHORIZATION_CODE, PUSHPLUS_TOKEN, DINGDING_WEBHOOK, FEISHU_WEBHOOK } = require('../ENV.js')
+const bark = require('./bark.js')
+const { EMAIL, AUTHORIZATION_CODE, PUSHPLUS_TOKEN, DINGDING_WEBHOOK, FEISHU_WEBHOOK, BARK_KEY } = require('../ENV.js')
 
 const pushMessage = ({ type, message }) => {
   console.log(message)
@@ -35,6 +36,14 @@ const pushMessage = ({ type, message }) => {
       formatter(type, message, {
         style: 'markdown',
         bold: true,
+      })
+    )
+  BARK_KEY &&
+    bark(
+      formatter(type, message, {
+        style: 'plain',
+        bold: false,
+        wordWrap: true,
       })
     )
 }

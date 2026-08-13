@@ -34,6 +34,8 @@
 | `PUSHPLUS_TOKEN` | 微信公众号`pushplus` `token` | 否 |
 | `DINGDING_WEBHOOK` | 钉钉机器人`Webhook` | 否 |
 | `FEISHU_WEBHOOK` | 飞书机器人`Webhook` | 否 |
+| `BARK_KEY` | `Bark` iOS推送的`device key` | 否 |
+| `BARK_SERVER` | `Bark`自定义推送服务器地址，默认 `https://api.day.app` | 否 |
 
 ### 效果预览
 
