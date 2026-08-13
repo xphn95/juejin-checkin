@@ -29,6 +29,7 @@ const bark = async ({ title = '', content = '' } = {}) => {
       if (response?.data?.code !== SUCCESS_CODE) {
         throw new Error(response?.data?.message)
       }
+      console.log(`Bark 推送成功(${server})：${title}`)
       return
     } catch (error) {
       if (i < MAX_RETRY - 1) {

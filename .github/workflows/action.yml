@@ -24,6 +24,8 @@ jobs:
           PUSHPLUS_TOKEN: ${{ secrets.PUSHPLUS_TOKEN }}
           DINGDING_WEBHOOK: ${{ secrets.DINGDING_WEBHOOK }}
           FEISHU_WEBHOOK: ${{ secrets.FEISHU_WEBHOOK }}
+          BARK_KEY: ${{ secrets.BARK_KEY }}
+          BARK_SERVER: ${{ secrets.BARK_SERVER }}
         run: |
           npm ci
           # getBenefitPage 走 Playwright 自带 Chromium，需下载 + Linux 系统依赖
